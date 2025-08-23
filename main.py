@@ -60,6 +60,8 @@ class UserResponse(BaseModel):
 app = FastAPI(title="HyperLiquid SaaS", description="Plateforme de notifications trading")
 
 # Static files et templates
+if not os.path.exists("static"):
+    os.makedirs("static")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
@@ -492,4 +494,5 @@ if __name__ == "__main__":
     print("🚀 Lancement de la plateforme HyperLiquid SaaS...")
     print("📱 Interface: http://localhost:8000")
     print("👨‍💼 Admin: http://localhost:8000/admin")
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
