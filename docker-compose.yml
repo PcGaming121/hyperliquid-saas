@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  hyperliquid-saas:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./user_bots:/app/user_bots
+      - ./logs:/app/logs
+      - ./hyperliquid_saas.db:/app/hyperliquid_saas.db
+    environment:
+      - DATABASE_URL=sqlite:///./hyperliquid_saas.db
+      - ADMIN_PASSWORD=admin123
+    restart: unless-stopped
