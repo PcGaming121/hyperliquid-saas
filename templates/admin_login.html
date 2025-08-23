@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - HyperLiquid SaaS{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 400px; margin: 100px auto;">
+    <div class="header">
+        <div class="logo">🔐 Administration</div>
+        <div class="subtitle">Accès Administrateur</div>
+    </div>
+    
+    <form method="POST" action="/admin/login">
+        <div class="form-group">
+            <label for="password">Mot de passe administrateur</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        
+        <button type="submit" class="btn">Se connecter</button>
+    </form>
+    
+    <a href="/" class="back-link" style="display: block; text-align: center; margin-top: 20px;">← Retour à l'accueil</a>
+</div>
+{% endblock %}

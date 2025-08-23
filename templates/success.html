@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Inscription Réussie - HyperLiquid SaaS{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="header">
+        <div class="logo">✅ Inscription Réussie !</div>
+    </div>
+    
+    <div class="alert alert-success">
+        <strong>Félicitations !</strong> Votre inscription a été enregistrée avec succès.
+    </div>
+    
+    <div style="text-align: center; margin: 40px 0;">
+        <h2 style="color: #2d3748; margin-bottom: 20px;">Prochaines étapes :</h2>
+        
+        <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+            <div style="display: flex; align-items: center; margin: 15px 0; padding: 15px; background: #f7fafc; border-radius: 10px;">
+                <div style="font-size: 1.5em; margin-right: 15px;">1️⃣</div>
+                <div>
+                    <strong>Attendre l'activation</strong><br>
+                    <small style="color: #718096;">Un administrateur va activer votre compte sous 24h</small>
+                </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; margin: 15px 0; padding: 15px; background: #f7fafc; border-radius: 10px;">
+                <div style="font-size: 1.5em; margin-right: 15px;">2️⃣</div>
+                <div>
+                    <strong>Notification d'activation</strong><br>
+                    <small style="color: #718096;">Vous recevrez un message sur votre bot Telegram</small>
+                </div>
+            </div>
+            
+            <div style="display: flex; align-items: center; margin: 15px 0; padding: 15px; background: #f7fafc; border-radius: 10px;">
+                <div style="font-size: 1.5em; margin-right: 15px;">3️⃣</div>
+                <div>
+                    <strong>Commencer le monitoring</strong><br>
+                    <small style="color: #718096;">Tapez /start à votre bot pour démarrer !</small>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 10px;">
+            <h3 style="margin-bottom: 10px;">🎯 Votre bot sera bientôt actif !</h3>
+            <p>Surveillance 24/7 • Notifications instantanées • Rapports quotidiens</p>
+        </div>
+        
+        <a href="/" class="back-link" style="display: inline-block; margin-top: 30px; color: #4c51bf;">← Retour à l'accueil</a>
+    </div>
+</div>
+{% endblock %}

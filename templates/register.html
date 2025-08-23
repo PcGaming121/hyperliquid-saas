@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Inscription - HyperLiquid SaaS{% endblock %}
+
+{% block content %}
+<div class="card">
+    <a href="/" class="back-link">← Retour à l'accueil</a>
+    
+    <div class="header">
+        <div class="logo">📝 Inscription</div>
+        <div class="subtitle">Configurez votre bot de notifications</div>
+    </div>
+    
+    <form method="POST" action="/register">
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+            <div class="help-text">Votre adresse email pour la gestion du compte</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="name">Nom complet *</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="wallet_address">Adresse Wallet HyperLiquid *</label>
+            <input type="text" id="wallet_address" name="wallet_address" required placeholder="0x...">
+            <div class="help-text">L'adresse de votre wallet principal qui trade</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="api_private_key">Clé Privée API HyperLiquid *</label>
+            <input type="text" id="api_private_key" name="api_private_key" required placeholder="0x...">
+            <div class="help-text">Clé privée de votre API wallet (lecture seule)</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="telegram_token">Token Bot Telegram *</label>
+            <input type="text" id="telegram_token" name="telegram_token" required placeholder="123456789:ABC...">
+            <div class="help-text">Token obtenu via @BotFather</div>
+        </div>
+        
+        <div class="form-group">
+            <label for="telegram_chat_id">Chat ID Telegram *</label>
+            <input type="text" id="telegram_chat_id" name="telegram_chat_id" required placeholder="123456789">
+            <div class="help-text">Votre Chat ID obtenu via @userinfobot</div>
+        </div>
+        
+        <div style="background: #edf2f7; padding: 20px; border-radius: 10px; margin: 30px 0;">
+            <h3 style="margin-bottom: 15px; color: #2d3748;">ℹ️ Instructions rapides :</h3>
+            <ol style="margin-left: 20px; color: #4a5568;">
+                <li><strong>Bot Telegram :</strong> Créez un bot via @BotFather</li>
+                <li><strong>Chat ID :</strong> Obtenez votre ID via @userinfobot</li>
+                <li><strong>API HyperLiquid :</strong> Créez une API wallet (lecture seule)</li>
+                <li><strong>Après inscription :</strong> Attendre l'activation manuelle</li>
+            </ol>
+        </div>
+        
+        <button type="submit" class="btn">S'inscrire</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="header">
+        <div class="logo">🚀 HyperLiquid SaaS</div>
+        <div class="subtitle">Notifications de Trading Automatisées</div>
+    </div>
+    
+    <div style="text-align: center;">
+        <h2 style="margin-bottom: 30px; color: #2d3748;">Surveillez vos trades HyperLiquid en temps réel</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 40px 0;">
+            <div style="padding: 20px; border: 2px solid #e2e8f0; border-radius: 10px;">
+                <div style="font-size: 2em; margin-bottom: 10px;">📱</div>
+                <h3>Notifications Telegram</h3>
+                <p>Recevez vos trades instantanément</p>
+            </div>
+            
+            <div style="padding: 20px; border: 2px solid #e2e8f0; border-radius: 10px;">
+                <div style="font-size: 2em; margin-bottom: 10px;">📊</div>
+                <h3>P&L en Temps Réel</h3>
+                <p>Suivez vos performances live</p>
+            </div>
+            
+            <div style="padding: 20px; border: 2px solid #e2e8f0; border-radius: 10px;">
+                <div style="font-size: 2em; margin-bottom: 10px;">📈</div>
+                <h3>Rapports Quotidiens</h3>
+                <p>Statistiques détaillées chaque soir</p>
+            </div>
+        </div>
+        
+        <a href="/register" class="btn" style="display: inline-block; width: auto; padding: 15px 40px; margin-top: 20px; text-decoration: none;">
+            Commencer Maintenant
+        </a>
+    </div>
+</div>
+{% endblock %}
