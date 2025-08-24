@@ -40,6 +40,8 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     bot_process_id = Column(String, nullable=True)
 
+# TEMPORAIRE : Recréer la base pour les nouveaux champs
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 # Models Pydantic
@@ -499,5 +501,6 @@ if __name__ == "__main__":
     print("👨‍💼 Admin: http://localhost:8000/admin")
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
 
