@@ -21,8 +21,13 @@
         </div>
         
         <div style="background: #e6fffa; padding: 20px; border-radius: 10px; text-align: center;">
-            <div style="font-size: 2em; color: #234e52;">{{ users|list|length }}</div>
-            <div style="color: #234e52; font-weight: 600;">Total Inscrits</div>
+            <div style="font-size: 2em; color: #234e52;">{{ users|selectattr('signum_connected')|list|length }}</div>
+            <div style="color: #234e52; font-weight: 600;">Connectés Signum</div>
+        </div>
+        
+        <div style="background: #edf2f7; padding: 20px; border-radius: 10px; text-align: center;">
+            <div style="font-size: 2em; color: #4a5568;">{{ users|list|length }}</div>
+            <div style="color: #4a5568; font-weight: 600;">Total Inscrits</div>
         </div>
     </div>
     
@@ -47,23 +52,44 @@
                     <td style="padding: 15px; color: #718096;">{{ user.email }}</td>
                     <td style="padding: 15px; font-family: monospace; font-size: 0.9em;">{{ user.wallet_address[:10] }}...</td>
                     <td style="padding: 15px; text-align: center;">
-                        {% if user.is_active %}
-                        <span style="background: #c6f6d5; color: #22543d; padding: 5px 10px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">✅ Actif</span>
-                        {% else %}
-                        <span style="background: #fed7d7; color: #742a2a; padding: 5px 10px; border-radius: 20px; font-size: 0.9em; font-weight: 600;">⏳ En attente</span>
-                        {% endif %}
+                        <div style="margin-bottom: 5px;">
+                            {% if user.is_active %}
+                            <span style="background: #c6f6d5; color: #22543d; padding: 3px 8px; border-radius: 15px; font-size: 0.8em; font-weight: 600;">✅ Actif</span>
+                            {% else %}
+                            <span style="background: #fed7d7; color: #742a2a; padding: 3px 8px; border-radius: 15px; font-size: 0.8em; font-weight: 600;">⏳ En attente</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% if user.signum_connected %}
+                            <span style="background: #bee3f8; color: #2c5282; padding: 3px 8px; border-radius: 15px; font-size: 0.8em; font-weight: 600;">🔗 Signum OK</span>
+                            {% else %}
+                            <span style="background: #fbb6ce; color: #97266d; padding: 3px 8px; border-radius: 15px; font-size: 0.8em; font-weight: 600;">❌ Pas connecté</span>
+                            {% endif %}
+                        </div>
                     </td>
                     <td style="padding: 15px; text-align: center; color: #718096; font-size: 0.9em;">{{ user.created_at.strftime('%d/%m/%Y') }}</td>
                     <td style="padding: 15px; text-align: center;">
-                        {% if user.is_active %}
-                        <button onclick="deactivateUser({{ user.id }})" style="background: #fc8181; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
-                            🔴 Désactiver
-                        </button>
-                        {% else %}
-                        <button onclick="activateUser({{ user.id }})" style="background: #68d391; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 0.9em;">
-                            ✅ Activer
-                        </button>
-                        {% endif %}
+                        <div style="margin-bottom: 8px;">
+                            {% if user.is_active %}
+                            <button onclick="deactivateUser({{ user.id }})" style="background: #fc8181; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px;">
+                                🔴 Désactiver
+                            </button>
+                            {% else %}
+                            <button onclick="activateUser({{ user.id }})" style="background: #68d391; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px;">
+                                ✅ Activer
+                            </button>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <button onclick="showApiKey({{ user.id }}, '{{ user.api_private_key }}')" style="background: #4299e1; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px;">
+                                🔑 Voir clé API
+                            </button>
+                            {% if not user.signum_connected %}
+                            <button onclick="markSignumConnected({{ user.id }})" style="background: #9f7aea; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">
+                                🔗 Marquer connecté
+                            </button>
+                            {% endif %}
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}
@@ -113,6 +139,88 @@ async function deactivateUser(userId) {
             location.reload();
         } else {
             alert('❌ Erreur lors de la désactivation');
+        }
+    } catch (error) {
+        alert('❌ Erreur de connexion');
+    }
+}
+
+function showApiKey(userId, apiKey) {
+    // Créer une modal pour afficher la clé API
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); z-index: 1000;
+        display: flex; align-items: center; justify-content: center;
+    `;
+    
+    const content = document.createElement('div');
+    content.style.cssText = `
+        background: white; padding: 30px; border-radius: 15px;
+        max-width: 600px; width: 90%;
+    `;
+    
+    content.innerHTML = `
+        <h2 style="margin-bottom: 20px; color: #2d3748;">🔑 Clé API HyperLiquid</h2>
+        <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-family: monospace; word-break: break-all; font-size: 14px;">
+            ${apiKey}
+        </div>
+        <div style="text-align: center;">
+            <button onclick="copyToClipboard('${apiKey}')" style="background: #4299e1; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; margin-right: 10px; font-size: 16px;">
+                📋 Copier la clé
+            </button>
+            <button onclick="closeModal()" style="background: #e53e3e; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                ❌ Fermer
+            </button>
+        </div>
+    `;
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    
+    // Fermer en cliquant à l'extérieur
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    };
+    
+    // Fonction pour fermer
+    window.closeModal = function() {
+        document.body.removeChild(modal);
+    };
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        alert('🎉 Clé API copiée dans le presse-papiers !');
+        closeModal();
+    }).catch(function() {
+        // Fallback pour anciens navigateurs
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('🎉 Clé API copiée !');
+        closeModal();
+    });
+}
+
+async function markSignumConnected(userId) {
+    if (!confirm('Marquer ce client comme connecté à Signum ?')) return;
+    
+    try {
+        const response = await fetch(`/admin/mark-signum-connected/${userId}`, {
+            method: 'POST',
+        });
+        
+        if (response.ok) {
+            alert('🔗 Client marqué comme connecté à Signum !');
+            location.reload();
+        } else {
+            alert('❌ Erreur lors de la mise à jour');
         }
     } catch (error) {
         alert('❌ Erreur de connexion');
