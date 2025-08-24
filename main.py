@@ -34,6 +34,7 @@ class User(Base):
     telegram_token = Column(String)
     telegram_chat_id = Column(String)
     is_active = Column(Boolean, default=False)
+    signum_connected = Column(Boolean, default=False)  # ← NOUVELLE LIGNE
     created_at = Column(DateTime, default=datetime.utcnow)
     bot_process_id = Column(String, nullable=True)
 
@@ -496,3 +497,4 @@ if __name__ == "__main__":
     print("👨‍💼 Admin: http://localhost:8000/admin")
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
