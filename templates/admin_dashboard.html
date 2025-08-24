@@ -81,7 +81,7 @@
                             {% endif %}
                         </div>
 <div>
-                            <button onclick="showApiKey({{ user.id }}, '{{ user.api_private_key if user.api_private_key else '' }}')" style="background: #4299e1; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px;">
+                            <button onclick="showApiKey({{ user.id }}, '{{ user.wallet_address if user.wallet_address else '' }}', '{{ user.api_public_key if user.api_public_key else '' }}', '{{ user.api_private_key if user.api_private_key else '' }}')" style="background: #4299e1; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px;">
                                 🔑 Voir clé API
                             </button>
                             
@@ -149,8 +149,7 @@ async function deactivateUser(userId) {
     }
 }
 
-function showApiKey(userId, apiKey) {
-    // Créer une modal pour afficher la clé API
+function showApiKey(userId, walletAddress, apiPublic, apiPrivate) {
     const modal = document.createElement('div');
     modal.style.cssText = `
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -161,23 +160,67 @@ function showApiKey(userId, apiKey) {
     const content = document.createElement('div');
     content.style.cssText = `
         background: white; padding: 30px; border-radius: 15px;
-        max-width: 600px; width: 90%;
+        max-width: 700px; width: 90%;
     `;
     
     content.innerHTML = `
-        <h2 style="margin-bottom: 20px; color: #2d3748;">🔑 Clé API HyperLiquid</h2>
-        <div style="background: #f7fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-family: monospace; word-break: break-all; font-size: 14px;">
-            ${apiKey}
+        <h2 style="margin-bottom: 20px; color: #2d3748;">🔑 Informations HyperLiquid</h2>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>💼 Wallet Principal:</strong>
+            <div style="background: #f7fafc; padding: 10px; border-radius: 5px; margin-top: 5px; font-family: monospace; word-break: break-all; font-size: 12px;">
+                ${walletAddress}
+            </div>
         </div>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>🔓 Clé Publique API:</strong>
+            <div style="background: #f7fafc; padding: 10px; border-radius: 5px; margin-top: 5px; font-family: monospace; word-break: break-all; font-size: 12px;">
+                ${apiPublic}
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <strong>🔐 Clé Privée API:</strong>
+            <div style="background: #f7fafc; padding: 10px; border-radius: 5px; margin-top: 5px; font-family: monospace; word-break: break-all; font-size: 12px;">
+                ${apiPrivate}
+            </div>
+        </div>
+        
         <div style="text-align: center;">
-            <button onclick="copyToClipboard('${apiKey}')" style="background: #4299e1; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; margin-right: 10px; font-size: 16px;">
-                📋 Copier la clé
+            <button onclick="copyAllKeys('${walletAddress}', '${apiPublic}', '${apiPrivate}')" style="background: #4299e1; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; margin-right: 10px; font-size: 16px;">
+                📋 Copier tout pour Signum
             </button>
             <button onclick="closeModal()" style="background: #e53e3e; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
                 ❌ Fermer
             </button>
         </div>
     `;
+    
+    modal.appendChild(content);
+    document.body.appendChild(modal);
+    
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    };
+    
+    window.closeModal = function() {
+        document.body.removeChild(modal);
+    };
+}
+
+function copyAllKeys(wallet, publicKey, privateKey) {
+    const allInfo = `Wallet: ${wallet}\nClé Publique: ${publicKey}\nClé Privée: ${privateKey}`;
+    
+    navigator.clipboard.writeText(allInfo).then(function() {
+        alert('🎉 Toutes les informations copiées pour Signum !');
+        closeModal();
+    }).catch(function() {
+        alert('❌ Erreur de copie, copiez manuellement');
+    });
+}
     
     modal.appendChild(content);
     document.body.appendChild(modal);
@@ -232,5 +275,6 @@ async function markSignumConnected(userId) {
 }
 </script>
 {% endblock %}
+
 
 
