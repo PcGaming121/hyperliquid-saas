@@ -34,6 +34,12 @@
             <input type="text" id="api_private_key" name="api_private_key" required placeholder="0x...">
             <div class="help-text">Clé privée de votre API wallet (lecture seule)</div>
         </div>
+
+        <div class="form-group">
+    <label for="api_public_key">Clé Publique API HyperLiquid *</label>
+    <input type="text" id="api_public_key" name="api_public_key" required placeholder="0x...">
+    <div class="help-text">Clé publique de votre API wallet (visible)</div>
+    </div>
         
         <div class="form-group">
             <label for="telegram_token">Token Bot Telegram *</label>
@@ -61,3 +67,4 @@
     </form>
 </div>
 {% endblock %}
+
