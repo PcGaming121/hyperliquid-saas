@@ -192,14 +192,16 @@ def create_user_bot(user: User):
     """Crée et lance un bot pour l'utilisateur"""
     try:
         # Créer le fichier de configuration du bot
-        bot_config = {
-            'TELEGRAM_TOKEN': user.telegram_token,
-            'CHAT_ID': user.telegram_chat_id,
-            'WALLET_ADDRESS': user.wallet_address,
-            'API_PRIVATE_KEY': user.api_private_key,
-            'CHECK_INTERVAL': 30,
-            'DAILY_REPORT_TIME': '23:59',
-        }
+bot_config = {
+    'TELEGRAM_TOKEN': user.telegram_token,
+    'CHAT_ID': user.telegram_chat_id,
+    'WALLET_ADDRESS': user.wallet_address,
+    'API_WALLET_ADDRESS': user.api_wallet_address,      # ← NOUVEAU
+    'API_PUBLIC_KEY': user.api_public_key,              # ← NOUVEAU
+    'API_PRIVATE_KEY': user.api_private_key,
+    'CHECK_INTERVAL': 30,
+    'DAILY_REPORT_TIME': '23:59',
+}
         
         # Créer le dossier pour les bots utilisateurs
         os.makedirs("user_bots", exist_ok=True)
@@ -501,6 +503,7 @@ if __name__ == "__main__":
     print("👨‍💼 Admin: http://localhost:8000/admin")
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
 
 
