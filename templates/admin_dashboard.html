@@ -80,8 +80,9 @@
                             </button>
                             {% endif %}
                         </div>
-                        <div>
-                            <button onclick="showApiKey({{ user.id }}, '{{ user.api_private_key }}')" style="background: #4299e1; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px;">
+<div>
+                            <!-- TEMPORAIRE: Commenté en attendant la mise à jour de la base
+                            <button onclick="showApiKey({{ user.id }}, '{{ user.api_private_key if user.api_private_key else '' }}')" style="background: #4299e1; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em; margin-right: 5px;">
                                 🔑 Voir clé API
                             </button>
                             {% if not user.signum_connected %}
@@ -89,8 +90,19 @@
                                 🔗 Marquer connecté
                             </button>
                             {% endif %}
-                        </div>
-                    </td>
+                            -->
+                            
+                            <!-- Gardez juste les boutons de base pour l'instant -->
+                            {% if user.is_active %}
+                            <button onclick="deactivateUser({{ user.id }})" style="background: #fc8181; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">
+                                🔴 Désactiver
+                            </button>
+                            {% else %}
+                            <button onclick="activateUser({{ user.id }})" style="background: #68d391; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">
+                                ✅ Activer
+                            </button>
+                            {% endif %}
+                        </div>                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -228,3 +240,4 @@ async function markSignumConnected(userId) {
 }
 </script>
 {% endblock %}
+
