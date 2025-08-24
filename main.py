@@ -29,12 +29,14 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     name = Column(String)
-    wallet_address = Column(String)
-    api_private_key = Column(String)
+    wallet_address = Column(String)                   # Wallet principal
+    api_wallet_address = Column(String)               # Adresse API wallet
+    api_public_key = Column(String)                   # Clé publique API
+    api_private_key = Column(String)                  # Clé privée API (UNE SEULE FOIS)
     telegram_token = Column(String)
     telegram_chat_id = Column(String)
     is_active = Column(Boolean, default=False)
-    signum_connected = Column(Boolean, default=False)  # ← NOUVELLE LIGNE
+    signum_connected = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     bot_process_id = Column(String, nullable=True)
 
@@ -497,4 +499,5 @@ if __name__ == "__main__":
     print("👨‍💼 Admin: http://localhost:8000/admin")
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 
